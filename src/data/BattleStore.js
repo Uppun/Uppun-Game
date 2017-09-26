@@ -2,20 +2,31 @@ import {ReduceStore} from 'flux/utils'
 import BattleDispatcher from './BattleDispatcher'
 import SailorMars from '../assets/rei.gif'
 import BattleActionTypes from './BattleActionTypes'
+import TeamStore from './TeamStore'
 
-function updateEnemies(enemies, action) {
-    const enemyLocation = enemies.findIndex(enemy => 
-        enemy.enemyHP > 0)
-    const enemiesCopy = [...enemies]
-    let enemy = {...enemiesCopy[enemyLocation]}
-    if (enemy.enemyHP - action.playerDamage <= 0){
+function updateEnemies(state, damage) {
+    const newState = {...state}
+    const stagesCopy = [...newState.stages]
+    const enemyArrayCopy = [...stagesCopy[newState.CurrentPage-1].enemies]
+    let enemyLocation = null
+    if (newState.Target == null)
+        enemyLocation = enemyArrayCopy.findIndex(enemy => 
+            enemy.enemyHP > 0)
+    else 
+        enemyLocation = newState.Target
+        
+    const enemy = {...enemyArrayCopy[enemyLocation]}
+    if (enemy.enemyHP - damage <= 0){
         enemy.enemyHP = 0
+        newState.Target = null
     }
     else {
-        enemy.enemyHP -= action.playerDamage
+        enemy.enemyHP -= damage
     }
-    enemiesCopy[enemyLocation] = {...enemy}
-    return enemiesCopy
+    enemyArrayCopy[enemyLocation] = enemy
+    stagesCopy[newState.CurrentPage-1].enemies = enemyArrayCopy
+    newState.stages = stagesCopy
+    return newState
 }
 class BattleStore extends ReduceStore {
     constructor() {
@@ -47,25 +58,26 @@ class BattleStore extends ReduceStore {
             }
                 BattleArray[i] = {enemies: EnemyArray}
         }
-        const BattleState = {CurrentPage: 1, MaxPages: BattleSize, stages: BattleArray}
+        const BattleState = {Target: null, CurrentPage: 1, MaxPages: BattleSize, stages: BattleArray}
         return (BattleState)
     }
     reduce (state, action) {
         switch(action.type) {
             case BattleActionTypes.ATK_BATTLE: {
-                const newState = {...state}
-                const stagesCopy = [...newState.stages]
-                let enemyArrayCopy = [...stagesCopy[newState.CurrentPage-1].enemies]
-                enemyArrayCopy = updateEnemies(enemyArrayCopy, action)
-                const isAllDead = enemyArrayCopy.every(enemy => 
+                const DamageTaken = Math.floor((Math.random() * TeamStore.getState().Team[0].playerBaseAtk) + 1)
+                const newState = updateEnemies(state, DamageTaken)
+                const isAllDead = newState.stages[newState.CurrentPage-1].enemies.every(enemy => 
                     enemy.enemyHP === 0)
-                stagesCopy[newState.CurrentPage-1].enemies = enemyArrayCopy
-                newState.stages = stagesCopy
                 if(isAllDead) {
                     if(newState.CurrentPage < newState.MaxPages){
                         newState.CurrentPage += 1
                     }
                 }
+                return newState
+            }
+            case BattleActionTypes.UPDATE_TARGET: {
+                const newState = {...state}
+                newState.Target = action.CurrentTarget
                 return newState
             }
             

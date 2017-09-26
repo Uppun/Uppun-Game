@@ -1,6 +1,4 @@
-import CharacterStore from '../data/CharacterStore'
 import TeamStore from '../data/TeamStore'
-import EnemyStore from '../data/EnemyStore'
 import BattleStore from '../data/BattleStore'
 import {Container} from 'flux/utils'
 import React from 'react'
@@ -14,7 +12,6 @@ class BattleWindow extends React.Component{
     }
 
     static calculateState(prevState) {
-        const {playerHP} = CharacterStore.getState()
         const playerHolder = TeamStore.getState().Team
         const EnemyHolder = BattleStore.getState()
         const enemyList = EnemyHolder.stages[EnemyHolder.CurrentPage-1].enemies
@@ -31,6 +28,11 @@ class BattleWindow extends React.Component{
         BattleActions.PlayerAttack()
     }
 
+    onClickTarget = (index) => {
+        console.log('You clicked me')
+        BattleActions.UpdateTarget(index)
+    }
+
     render() {
         const {playerHolder, enemyList, attackButtonVisibility} = this.state
         return (
@@ -41,7 +43,7 @@ class BattleWindow extends React.Component{
                 </div>
                 <div>
                     {enemyList.map((enemy, index) => (
-                    <div key={index}>Enemy: {enemy.enemyHP}</div>))}
+                    <div key={index} onClick= {() => this.onClickTarget(index)} style = {{border: (BattleStore.getState().Target == index) ? '2px solid red' : '' }}>Enemy: {enemy.enemyHP}</div>))}
                 </div>
                 <button
                     className="attackBtn"

@@ -2,18 +2,19 @@ import {ReduceStore} from 'flux/utils'
 import BattleDispatcher from './BattleDispatcher'
 import SailorMoon from '../assets/usagi.gif'
 import BattleActionTypes from './BattleActionTypes'
+import BattleStore from './BattleStore'
 
-function updateTeam(team, action) {
-    console.log("Got here")
+function updateTeam(team, action, damage) {
+    console.log(damage)
     const teamLocation = team.findIndex(member => 
         member.playerHP > 0)
     const teamCopy = [...team]
     let member = {...teamCopy[teamLocation]}
-    if (member.playerHP - action.enemyDamage <= 0){
+    if (member.playerHP - damage <= 0){
         member.playerHP = 0
     }
     else {
-        member.playerHP -= action.enemyDamage
+        member.playerHP -= damage
     }
     teamCopy[teamLocation] = {...member}
     return teamCopy
@@ -52,7 +53,10 @@ class CharacterStore extends ReduceStore {
             case BattleActionTypes.ATK_BATTLE:
                 const newState = {...state}
                 let TeamArrayCopy = [...newState.Team]
-                TeamArrayCopy = updateTeam(TeamArrayCopy, action)
+                const enemyStoreState = {...BattleStore.getState()}
+                let damageTaken = Math.floor((Math.random() * enemyStoreState.stages[enemyStoreState.CurrentPage-1].enemies[0].enemyBaseAtk + 1))
+                console.log(damageTaken)
+                TeamArrayCopy = updateTeam(TeamArrayCopy, action, damageTaken)
                 newState.Team = TeamArrayCopy
                 return newState
             default: 
