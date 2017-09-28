@@ -33,7 +33,7 @@ class CharacterStore extends ReduceStore {
                 backgroundPositionY: 685,
                 height: 40,
                 width: 40,
-                top: 100,
+                top: 150,
                 left: 250,
                 backgroundImage: `url(${SailorMoon})`,
                 zIndex: 2

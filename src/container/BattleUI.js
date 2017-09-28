@@ -29,7 +29,6 @@ class BattleWindow extends React.Component{
     }
 
     onClickTarget = (index) => {
-        console.log('You clicked me')
         BattleActions.UpdateTarget(index)
     }
 

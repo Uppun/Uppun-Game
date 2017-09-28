@@ -17,7 +17,7 @@ class EnemyWindow extends React.Component {
         return (
         <div> 
             {this.state.Team.map((player, index) => (
-            <div key={index} style={{...player.characterSprite, position: 'absolute', top: Math.floor((Math.random() * 100)+90)}}/>))}
+            <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
         </div>)
     }
 }

@@ -41,7 +41,7 @@ class BattleStore extends ReduceStore {
                 backgroundPositionY: 355,
                 height: 40,
                 width: 39,
-                top: 100,
+                top: 150,
                 left: 50,
                 backgroundImage: `url(${SailorMars})`,
                 zIndex: 2,
@@ -77,7 +77,9 @@ class BattleStore extends ReduceStore {
             }
             case BattleActionTypes.UPDATE_TARGET: {
                 const newState = {...state}
-                newState.Target = action.CurrentTarget
+                if (newState.stages[newState.CurrentPage-1].enemies[action.CurrentTarget].enemyHP != 0) {
+                    newState.Target = action.CurrentTarget
+                }
                 return newState
             }
             
