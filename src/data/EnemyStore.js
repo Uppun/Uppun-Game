@@ -18,28 +18,27 @@ class EnemyStore extends ReduceStore {
                 top: 100,
                 left: 50,
                 backgroundImage: `url(${SailorMars})`,
-                zIndex: 2
+                zIndex: 2,
             },
-            enemyHP: Math.floor((Math.random()*50)+21),
-            enemyBaseAtk: Math.floor((Math.random()*10)+1)
+            enemyHP: Math.floor(Math.random() * 50 + 21),
+            enemyBaseAtk: Math.floor(Math.random() * 10 + 1),
         }
     }
-    reduce (state, action) {
-        switch(action.type) {
+    reduce(state, action) {
+        switch (action.type) {
             case BattleActionTypes.ATK_BATTLE:
-                if ((state.enemyHP - action.playerDamage) <= 0)
+                if (state.enemyHP - action.playerDamage <= 0)
                     return {
                         ...state,
-                        enemyHP: 0
+                        enemyHP: 0,
                     }
-                else {
-                    return {
-                        ...state, 
-                        enemyHP: state.enemyHP - action.playerDamage, 
-                    }
+
+                return {
+                    ...state,
+                    enemyHP: state.enemyHP - action.playerDamage,
                 }
 
-            default: 
+            default:
                 return state
         }
     }

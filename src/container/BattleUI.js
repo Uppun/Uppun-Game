@@ -4,12 +4,10 @@ import {Container} from 'flux/utils'
 import React from 'react'
 import BattleActions from '../data/BattleActions'
 import BattleMiddleware from '../data/BattleMiddleware'
-class BattleWindow extends React.Component{
+
+class BattleWindow extends React.Component {
     static getStores() {
-        return [
-            TeamStore,
-            BattleStore,
-        ]
+        return [TeamStore, BattleStore]
     }
 
     static calculateState(prevState) {
@@ -20,23 +18,25 @@ class BattleWindow extends React.Component{
             console.log(EnemyHolder)
             const enemyList = EnemyHolder.stages[EnemyHolder.CurrentPage].enemies
             console.log(enemyList)
-            const attackButtonVisibility = ((enemyList.some(enemy => enemy.enemyHP > 0)) && (playerHolder.some(player => player.playerHP > 0)) > 0) ? 'visible' : 'hidden'
+            const attackButtonVisibility =
+                enemyList.some(enemy => enemy.enemyHP > 0) && playerHolder.some(player => player.playerHP > 0) > 0
+                    ? 'visible'
+                    : 'hidden'
             return {
                 playerHolder,
                 enemyList,
                 attackButtonVisibility,
             }
         }
-        else {
-            return null
-        }
+
+        return null
     }
 
     onClickAttack = () => {
         BattleMiddleware.serverAttack(BattleStore.getState().Target)
     }
 
-    onClickTarget = (index) => {
+    onClickTarget = index => {
         BattleActions.UpdateTarget(index)
     }
 
@@ -45,13 +45,17 @@ class BattleWindow extends React.Component{
         if (playerHolder) {
             return (
                 <div>
-                    <div>
-                        {playerHolder.map((player, index) => 
-                        <div key={index}>Player: {player.playerHP}</div>)}
-                    </div>
+                    <div>{playerHolder.map((player, index) => <div key={index}>Player: {player.playerHP}</div>)}</div>
                     <div>
                         {enemyList.map((enemy, index) => (
-                        <div key={index} onClick= {() => this.onClickTarget(index)} style = {{border: (BattleStore.getState().Target == index) ? '2px solid red' : '' }}>Enemy: {enemy.enemyHP}</div>))}
+                            <div
+                                key={index}
+                                onClick={() => this.onClickTarget(index)}
+                                style={{border: BattleStore.getState().Target == index ? '2px solid red' : ''}}
+                            >
+                                Enemy: {enemy.enemyHP}
+                            </div>
+                        ))}
                     </div>
                     <button
                         className="attackBtn"
@@ -63,9 +67,8 @@ class BattleWindow extends React.Component{
                 </div>
             )
         }
-    else {
+
         return null
-    }
     }
 }
 

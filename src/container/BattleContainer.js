@@ -10,27 +10,35 @@ class EnemyWindow extends React.Component {
 
     static calculateState(prevState) {
         const battles = BattleStore.getState()
-        if (battles){
+        if (battles) {
             return battles.stages[battles.CurrentPage]
         }
-        else {
-            return null
-        }
+
+        return null
     }
-    onClickTarget = (index) => {
+    onClickTarget = index => {
         BattleActions.UpdateTarget(index)
     }
     render() {
         if (this.state.enemies != null) {
             return (
-            <div> 
-                {this.state.enemies.map((enemy, index) => (
-                <div key={index} onClick= {() => this.onClickTarget(index)} style={{...enemy.enemySprite, position: 'absolute', top: enemy.enemySprite.top + (index * 50)}}/>))}
-            </div>)
+                <div>
+                    {this.state.enemies.map((enemy, index) => (
+                        <div
+                            key={index}
+                            onClick={() => this.onClickTarget(index)}
+                            style={{
+                                ...enemy.enemySprite,
+                                position: 'absolute',
+                                top: enemy.enemySprite.top + index * 50,
+                            }}
+                        />
+                    ))}
+                </div>
+            )
         }
-        else {
-            return null
-        }
+
+        return null
     }
 }
 

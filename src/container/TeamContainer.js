@@ -9,21 +9,29 @@ class TeamWindow extends React.Component {
 
     static calculateState(prevState) {
         return {
-            ...TeamStore.getState()
+            ...TeamStore.getState(),
         }
     }
 
     render() {
         if (this.state.Team != null) {
             return (
-            <div> 
-                {this.state.Team.map((player, index) => (
-                <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
-            </div>)
+                <div>
+                    {this.state.Team.map((player, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                ...player.characterSprite,
+                                position: 'absolute',
+                                top: player.characterSprite.top + index * 50,
+                            }}
+                        />
+                    ))}
+                </div>
+            )
         }
-        else {
-            return null
-        }
+
+        return null
     }
 }
 

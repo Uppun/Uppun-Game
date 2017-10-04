@@ -13,11 +13,8 @@ class EnemyWindow extends React.Component {
         }
     }
     render() {
-        return (
-            <div style = {{...this.state.enemySprite, position: 'absolute'}}>
-            </div>
-        )
+        return <div style={{...this.state.enemySprite, position: 'absolute'}} />
     }
-} 
+}
 
 export default Container.create(EnemyWindow)

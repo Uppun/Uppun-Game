@@ -23,7 +23,6 @@ function serverAttack(target) {
     for (let j = 0; j < AttackResults.EnemyAttacks.length; j++) {
         BattleActions.PlayerAttack(AttackResults.EnemyAttacks[j])
     }
-    
 }
 
 export default {startGame, serverAttack}

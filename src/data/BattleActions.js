@@ -1,34 +1,33 @@
 import BattleActionTypes from './BattleActionTypes'
 import Dispatcher from './BattleDispatcher'
 import BattleStore from './BattleStore'
+
 const Actions = {
     PlayerAttack(AttackResults) {
         Dispatcher.dispatch({
             type: BattleActionTypes.ATK_BATTLE,
-            Results: AttackResults
+            Results: AttackResults,
         })
     },
     EnemyAttack(AttackResults) {
         Dispatcher.dispatch({
             type: BattleActionTypes.ENM_ATK,
-            Results: AttackResults
+            Results: AttackResults,
         })
     },
     UpdateTarget(index) {
         Dispatcher.dispatch({
             type: BattleActionTypes.UPDATE_TARGET,
-            CurrentTarget: index
+            CurrentTarget: index,
         })
     },
     Initialize(GameState) {
         Dispatcher.dispatch({
             type: BattleActionTypes.INITIALIZE,
             EnemyInfo: GameState.enemies,
-            TeamInfo: GameState.heroes
+            TeamInfo: GameState.heroes,
         })
-
-    }
-
+    },
 }
 
 export default Actions

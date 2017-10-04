@@ -2,6 +2,7 @@ import {ReduceStore} from 'flux/utils'
 import BattleDispatcher from './BattleDispatcher'
 import SailorMoon from '../assets/usagi.gif'
 import BattleActionTypes from './BattleActionTypes'
+
 class CharacterStore extends ReduceStore {
     constructor() {
         super(BattleDispatcher)
@@ -17,28 +18,27 @@ class CharacterStore extends ReduceStore {
                 top: 100,
                 left: 250,
                 backgroundImage: `url(${SailorMoon})`,
-                zIndex: 2
+                zIndex: 2,
             },
-            playerHP: Math.floor((Math.random()*50)+21),
-            playerBaseAtk: Math.floor((Math.random()*10)+1)
+            playerHP: Math.floor(Math.random() * 50 + 21),
+            playerBaseAtk: Math.floor(Math.random() * 10 + 1),
         }
     }
-    reduce (state, action) {
-        switch(action.type) {
+    reduce(state, action) {
+        switch (action.type) {
             case BattleActionTypes.ATK_BATTLE:
-                if ((state.playerHP - action.enemyDamage) <= 0)
+                if (state.playerHP - action.enemyDamage <= 0)
                     return {
                         ...state,
-                        playerHP: 0
+                        playerHP: 0,
                     }
-                else {
-                    return {
-                        ...state, 
-                        playerHP: state.playerHP - action.enemyDamage, 
-                    }
+
+                return {
+                    ...state,
+                    playerHP: state.playerHP - action.enemyDamage,
                 }
 
-            default: 
+            default:
                 return state
         }
     }

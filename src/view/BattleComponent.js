@@ -8,12 +8,11 @@ import BattleUI from '../container/BattleUI'
 function BattleComponent() {
     return (
         <div>
-            <TeamContainer/>
-            <BattleContainer/>
-            <BattleUI/>
+            <TeamContainer />
+            <BattleContainer />
+            <BattleUI />
         </div>
     )
 }
-
 
 export default BattleComponent

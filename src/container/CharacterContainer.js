@@ -13,11 +13,8 @@ class CharacterWindow extends React.Component {
         }
     }
     render() {
-        return (
-            <div style = {{...this.state.characterSprite, position: 'absolute'}}>
-            </div>
-        )
+        return <div style={{...this.state.characterSprite, position: 'absolute'}} />
     }
-} 
+}
 
 export default Container.create(CharacterWindow)

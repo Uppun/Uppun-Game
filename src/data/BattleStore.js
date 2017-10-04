@@ -11,8 +11,8 @@ class BattleStore extends ReduceStore {
     getInitialState() {
         return null
     }
-    reduce (state, action) {
-        switch(action.type) {
+    reduce(state, action) {
+        switch (action.type) {
             case BattleActionTypes.ENM_ATK: {
                 const newState = {...state}
                 const stages = [...newState.stages]
@@ -20,8 +20,7 @@ class BattleStore extends ReduceStore {
                 const enemyArray = [...stage.enemies]
                 const enemy = {...enemyArray[action.Results.receiver]}
                 enemy.enemyHP -= action.Results.damage
-                if(enemy.enemyHP < 0)
-                    enemy.enemyHP = 0
+                if (enemy.enemyHP < 0) enemy.enemyHP = 0
                 enemyArray[action.Results.receiver] = enemy
                 stage.enemies = enemyArray
                 stages[newState.CurrentPage] = stage
@@ -39,8 +38,8 @@ class BattleStore extends ReduceStore {
             case BattleActionTypes.INITIALIZE: {
                 return action.EnemyInfo
             }
-            
-            default: 
+
+            default:
                 return state
         }
     }
