@@ -25,22 +25,21 @@ class CharacterStore extends ReduceStore {
     }
 
     getInitialState() {
-       return {}
+       return null
     }
     reduce (state, action) {
         switch(action.type) {
             case BattleActionTypes.ATK_BATTLE:
+            console.log(action)
             const newState = {...state}
             const Team = [...newState.Team]
-            const member = {...team[action.Results.enemyTarget]}
+            const member = {...Team[action.Results.enemyTarget]}
             member.playerHP -= action.Results.damage
             if(member.playerHP < 0)
                 member.playerHP = 0
             Team[action.Results.enemyTarget] = member
             newState.Team = Team
             return newState
-
-                return newState
 
             case BattleActionTypes.INITIALIZE: {
                 return action.TeamInfo

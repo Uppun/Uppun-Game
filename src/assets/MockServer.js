@@ -66,10 +66,10 @@ function updateGame(target) {
     let EnemyAttacks = []
 
 
-    const battle = GameState.BattleState
-    const stage = battle.stages[CurrentPage]
+    const battle = GameState.enemies
+    const stage = battle.stages[battle.CurrentPage]
     const {enemies} = stage
-    const players = GameState.TeamState.Team
+    const players = GameState.heroes.Team
     battle.Target = target
     let CurrentEnemy = enemies[battle.Target]
 
@@ -77,11 +77,15 @@ function updateGame(target) {
         if (players[i].playerHP > 0) {
             const DamageDone = Math.floor((Math.random() * players[i].playerBaseAtk) + 1)
             TeamAttacks.push({ attacker: i, damage: DamageDone, receiver: battle.Target })
+            console.log(CurrentEnemy)
             CurrentEnemy.enemyHP -= DamageDone
             if (CurrentEnemy.enemyHP <= 0) {
                 CurrentEnemy.enemyHP = 0
                 CurrentEnemy = enemies.find(enemy => enemy.enemyHP > 0)
-                battle.Target = enemies.findIndex(enemy => enemy.enemyHP > 0)
+                if (CurrentEnemy)
+                    battle.Target = enemies.findIndex(enemy => enemy.enemyHP > 0)
+                else
+                    break;
             }
         }
     }
@@ -103,3 +107,5 @@ function updateGame(target) {
 
     return MockSend({TeamAttacks, EnemyAttacks})
 }
+
+export default {initializeGame, updateGame}

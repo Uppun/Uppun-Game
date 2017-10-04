@@ -2,7 +2,7 @@ import TeamStore from '../data/TeamStore'
 import React from 'react'
 import {Container} from 'flux/utils'
 
-class EnemyWindow extends React.Component {
+class TeamWindow extends React.Component {
     static getStores() {
         return [TeamStore]
     }
@@ -14,12 +14,17 @@ class EnemyWindow extends React.Component {
     }
 
     render() {
-        return (
-        <div> 
-            {this.state.Team.map((player, index) => (
-            <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
-        </div>)
+        if (this.state.Team != null) {
+            return (
+            <div> 
+                {this.state.Team.map((player, index) => (
+                <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
+            </div>)
+        }
+        else {
+            return null
+        }
     }
 }
 
-export default Container.create(EnemyWindow)
+export default Container.create(TeamWindow)
