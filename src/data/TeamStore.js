@@ -25,40 +25,26 @@ class CharacterStore extends ReduceStore {
     }
 
     getInitialState() {
-        let TeamArray = []
-        const TeamSize = Math.floor((Math.random()*4) + 1)
-        const testPlayer = {
-            characterSprite: {
-                backgroundPositionX: 353,
-                backgroundPositionY: 685,
-                height: 40,
-                width: 40,
-                top: 150,
-                left: 250,
-                backgroundImage: `url(${SailorMoon})`,
-                zIndex: 2
-            },
-            playerHP: Math.floor((Math.random()*50)+21),
-            playerBaseAtk: Math.floor((Math.random()*10)+1)
-        }
-
-        for (let i = 0; i < TeamSize; i++) {
-                TeamArray.push(testPlayer)
-            }
-        const TeamState = {Team: TeamArray}
-        return (TeamState)
+       return {}
     }
     reduce (state, action) {
         switch(action.type) {
             case BattleActionTypes.ATK_BATTLE:
-                const newState = {...state}
-                let TeamArrayCopy = [...newState.Team]
-                const enemyStoreState = {...BattleStore.getState()}
-                let damageTaken = Math.floor((Math.random() * enemyStoreState.stages[enemyStoreState.CurrentPage-1].enemies[0].enemyBaseAtk + 1))
-                console.log(damageTaken)
-                TeamArrayCopy = updateTeam(TeamArrayCopy, action, damageTaken)
-                newState.Team = TeamArrayCopy
+            const newState = {...state}
+            const Team = [...newState.Team]
+            const member = {...team[action.Results.enemyTarget]}
+            member.playerHP -= action.Results.damage
+            if(member.playerHP < 0)
+                member.playerHP = 0
+            Team[action.Results.enemyTarget] = member
+            newState.Team = Team
+            return newState
+
                 return newState
+
+            case BattleActionTypes.INITIALIZE: {
+                return action.TeamInfo
+            }
             default: 
                 return state
         }

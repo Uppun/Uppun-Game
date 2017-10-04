@@ -3,6 +3,7 @@ import BattleStore from '../data/BattleStore'
 import {Container} from 'flux/utils'
 import React from 'react'
 import BattleActions from '../data/BattleActions'
+import BattleMiddleware from '../data/BattleMiddleware'
 class BattleWindow extends React.Component{
     static getStores() {
         return [
@@ -25,7 +26,7 @@ class BattleWindow extends React.Component{
     }
 
     onClickAttack = () => {
-        BattleActions.PlayerAttack()
+        BattleMiddleWare.serverAttack(BattleStore.getState().Target)
     }
 
     onClickTarget = (index) => {
