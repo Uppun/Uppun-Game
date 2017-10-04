@@ -11,7 +11,7 @@ class EnemyWindow extends React.Component {
     static calculateState(prevState) {
         const battles = BattleStore.getState()
         if (battles){
-            return battles.stages[battles.CurrentPage - 1]
+            return battles.stages[battles.CurrentPage]
         }
         else {
             return null
