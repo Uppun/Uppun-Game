@@ -1,11 +1,11 @@
 import {ReduceStore} from 'flux/utils'
-import BattleDispatcher from './BattleDispatcher'
+import Dispatcher from '../Dispatcher'
+import ActionTypes from '../actions/ActionTypes'
 import SailorMoon from '../assets/usagi.gif'
-import BattleActionTypes from './BattleActionTypes'
 
 class CharacterStore extends ReduceStore {
     constructor() {
-        super(BattleDispatcher)
+        super(Dispatcher)
     }
 
     getInitialState() {
@@ -24,19 +24,14 @@ class CharacterStore extends ReduceStore {
             playerBaseAtk: Math.floor(Math.random() * 10 + 1),
         }
     }
+
     // eslint-disable-next-line class-methods-use-this
     reduce(state, action) {
         switch (action.type) {
-            case BattleActionTypes.ATK_BATTLE:
-                if (state.playerHP - action.enemyDamage <= 0)
-                    return {
-                        ...state,
-                        playerHP: 0,
-                    }
-
+            case ActionTypes.PLAYER_ATTACKED:
                 return {
                     ...state,
-                    playerHP: state.playerHP - action.enemyDamage,
+                    playerHP: Math.max(state.playerHP - action.enemyDamage, 0),
                 }
 
             default:

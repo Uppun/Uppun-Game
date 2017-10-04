@@ -1,0 +1,8 @@
+const ActionTypes = {
+    INITIALIZE: 'INITIALIZE',
+    UPDATE_TARGET: 'UPDATE_TARGET',
+    ENEMY_ATTACKED: 'ENEMY_ATTACKED',
+    PLAYER_ATTACKED: 'PLAYER_ATTACKED',
+}
+
+export default ActionTypes

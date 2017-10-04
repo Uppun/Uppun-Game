@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import BattleComponent from './view/BattleComponent'
-import BattleMiddleware from './data/BattleMiddleware'
+import App from './components/App'
+import Middleware from './Middleware'
 
-ReactDOM.render(<BattleComponent />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
 
-BattleMiddleware.startGame()
+Middleware.startGame()
