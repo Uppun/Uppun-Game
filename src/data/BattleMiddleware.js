@@ -15,11 +15,13 @@ function startGame() {
 }
 function serverAttack(target) {
     const AttackResults = MockParse(muhServer.updateGame(target))
-    for (let i = 0; i < AttackResults.TeamAttacks.length(); i++) {
-        BattleActions.PlayerAttack(AttackResults.EnemyAttacks[i])
+    if (AttackResults.EnemyAttacks) {
+        for (let i = 0; i < AttackResults.TeamAttacks.length; i++) {
+            BattleActions.EnemyAttack(AttackResults.TeamAttacks[i])
+        }
     }
-    for (let j = 0; j < AttackResults.EnemyAttacks.length(); j++) {
-        BattleActions.EnemyAttacK(AttackResults.TeamAttacks[j])
+    for (let j = 0; j < AttackResults.EnemyAttacks.length; j++) {
+        BattleActions.PlayerAttack(AttackResults.EnemyAttacks[j])
     }
     
 }

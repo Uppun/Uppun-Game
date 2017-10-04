@@ -14,11 +14,16 @@ class TeamWindow extends React.Component {
     }
 
     render() {
-        return (
-        <div> 
-            {this.state.Team.map((player, index) => (
-            <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
-        </div>)
+        if (this.state.Team != null) {
+            return (
+            <div> 
+                {this.state.Team.map((player, index) => (
+                <div key={index} style={{...player.characterSprite, position: 'absolute', top: player.characterSprite.top + (index * 50)}}/>))}
+            </div>)
+        }
+        else {
+            return null
+        }
     }
 }
 

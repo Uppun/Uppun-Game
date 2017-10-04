@@ -30,6 +30,7 @@ class CharacterStore extends ReduceStore {
     reduce (state, action) {
         switch(action.type) {
             case BattleActionTypes.ATK_BATTLE:
+            console.log(action)
             const newState = {...state}
             const Team = [...newState.Team]
             const member = {...Team[action.Results.enemyTarget]}

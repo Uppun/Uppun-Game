@@ -9,14 +9,15 @@ class BattleStore extends ReduceStore {
         super(BattleDispatcher)
     }
     getInitialState() {
-    return null
+        return null
     }
     reduce (state, action) {
         switch(action.type) {
             case BattleActionTypes.ENM_ATK: {
+                console.log('Look here ' + state)
                 const newState = {...state}
                 const stages = [...newState.stages]
-                const enemyArray = [...stages[newState.CurrentPage]]
+                const enemyArray = [...stages[newState.CurrentPage].enemies]
                 const enemy = {...enemyArray[action.Results.receiver]}
                 enemy.enemyHP -= action.Results.damage
                 if(enemy.enemyHP < 0)
@@ -28,13 +29,15 @@ class BattleStore extends ReduceStore {
             }
             case BattleActionTypes.UPDATE_TARGET: {
                 const newState = {...state}
-                if (newState.stages[newState.CurrentPage-1].enemies[action.CurrentTarget].enemyHP !== 0) {
+                if (newState.stages[newState.CurrentPage].enemies[action.CurrentTarget].enemyHP !== 0) {
                     newState.Target = action.CurrentTarget
                 }
+                console.log("Wokf" + newState)
                 return newState
             }
 
             case BattleActionTypes.INITIALIZE: {
+                console.log("akid" + action.EnemyInfo)
                 return action.EnemyInfo
             }
             
