@@ -1,7 +1,7 @@
+import React from 'react'
+import {Container} from 'flux/utils'
 import TeamStore from '../data/TeamStore'
 import BattleStore from '../data/BattleStore'
-import {Container} from 'flux/utils'
-import React from 'react'
 import BattleActions from '../data/BattleActions'
 import BattleMiddleware from '../data/BattleMiddleware'
 
@@ -15,9 +15,7 @@ class BattleWindow extends React.Component {
         if (stateHolder) {
             const playerHolder = TeamStore.getState().Team
             const EnemyHolder = BattleStore.getState()
-            console.log(EnemyHolder)
             const enemyList = EnemyHolder.stages[EnemyHolder.CurrentPage].enemies
-            console.log(enemyList)
             const attackButtonVisibility =
                 enemyList.some(enemy => enemy.enemyHP > 0) && playerHolder.some(player => player.playerHP > 0) > 0
                     ? 'visible'
@@ -51,7 +49,7 @@ class BattleWindow extends React.Component {
                             <div
                                 key={index}
                                 onClick={() => this.onClickTarget(index)}
-                                style={{border: BattleStore.getState().Target == index ? '2px solid red' : ''}}
+                                style={{border: BattleStore.getState().Target === index ? '2px solid red' : ''}}
                             >
                                 Enemy: {enemy.enemyHP}
                             </div>

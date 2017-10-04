@@ -1,8 +1,6 @@
 import {ReduceStore} from 'flux/utils'
 import BattleDispatcher from './BattleDispatcher'
-import SailorMars from '../assets/rei.gif'
 import BattleActionTypes from './BattleActionTypes'
-import TeamStore from './TeamStore'
 
 class BattleStore extends ReduceStore {
     constructor() {
@@ -11,6 +9,7 @@ class BattleStore extends ReduceStore {
     getInitialState() {
         return null
     }
+    // eslint-disable-next-line class-methods-use-this
     reduce(state, action) {
         switch (action.type) {
             case BattleActionTypes.ENM_ATK: {

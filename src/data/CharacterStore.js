@@ -24,6 +24,7 @@ class CharacterStore extends ReduceStore {
             playerBaseAtk: Math.floor(Math.random() * 10 + 1),
         }
     }
+    // eslint-disable-next-line class-methods-use-this
     reduce(state, action) {
         switch (action.type) {
             case BattleActionTypes.ATK_BATTLE:

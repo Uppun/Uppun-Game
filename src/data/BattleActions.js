@@ -1,6 +1,5 @@
 import BattleActionTypes from './BattleActionTypes'
 import Dispatcher from './BattleDispatcher'
-import BattleStore from './BattleStore'
 
 const Actions = {
     PlayerAttack(AttackResults) {

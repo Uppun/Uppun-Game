@@ -1,6 +1,6 @@
-import BattleStore from '../data/BattleStore'
 import React from 'react'
 import {Container} from 'flux/utils'
+import BattleStore from '../data/BattleStore'
 import BattleActions from '../data/BattleActions'
 
 class EnemyWindow extends React.Component {

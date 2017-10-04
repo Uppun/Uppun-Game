@@ -1,6 +1,4 @@
 import React from 'react'
-import CharacterContainer from '../container/CharacterContainer'
-import EnemyContainer from '../container/EnemyContainer'
 import BattleContainer from '../container/BattleContainer'
 import TeamContainer from '../container/TeamContainer'
 import BattleUI from '../container/BattleUI'

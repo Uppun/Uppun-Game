@@ -1,6 +1,6 @@
-import TeamStore from '../data/TeamStore'
 import React from 'react'
 import {Container} from 'flux/utils'
+import TeamStore from '../data/TeamStore'
 
 class TeamWindow extends React.Component {
     static getStores() {

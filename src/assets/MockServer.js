@@ -1,4 +1,3 @@
-import BattleActions from '../data/BattleActions'
 import SailorMoon from './usagi.gif'
 import SailorMars from './rei.gif'
 
@@ -57,10 +56,15 @@ function MockSend(data) {
     return JSON.stringify(data)
 }
 
+function MockParse(data) {
+    return JSON.parse(data)
+}
+
 function initializeGame() {
     return MockSend(GameState)
 }
-function updateGame(target) {
+function updateGame(data) {
+    const target = MockParse(data)
     const TeamAttacks = []
     const EnemyAttacks = []
 
@@ -75,7 +79,6 @@ function updateGame(target) {
         if (players[i].playerHP > 0) {
             const DamageDone = Math.floor(Math.random() * players[i].playerBaseAtk + 1)
             TeamAttacks.push({attacker: i, damage: DamageDone, receiver: battle.Target})
-            console.log(CurrentEnemy)
             CurrentEnemy.enemyHP -= DamageDone
             if (CurrentEnemy.enemyHP <= 0) {
                 CurrentEnemy.enemyHP = 0

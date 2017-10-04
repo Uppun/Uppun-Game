@@ -14,7 +14,7 @@ function startGame() {
     BattleActions.Initialize(gameStart)
 }
 function serverAttack(target) {
-    const AttackResults = MockParse(muhServer.updateGame(target))
+    const AttackResults = MockParse(muhServer.updateGame(MockSend(target)))
     if (AttackResults.EnemyAttacks) {
         for (let i = 0; i < AttackResults.TeamAttacks.length; i++) {
             BattleActions.EnemyAttack(AttackResults.TeamAttacks[i])
