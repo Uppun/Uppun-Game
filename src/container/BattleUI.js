@@ -26,7 +26,7 @@ class BattleWindow extends React.Component{
     }
 
     onClickAttack = () => {
-        BattleMiddleWare.serverAttack(BattleStore.getState().Target)
+        BattleMiddleware.serverAttack(BattleStore.getState().Target)
     }
 
     onClickTarget = (index) => {

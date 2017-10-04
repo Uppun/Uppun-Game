@@ -9,7 +9,7 @@ const Actions = {
         })
     },
     EnemyAttack(AttackResults) {
-        Dispater.dispatch({
+        Dispatcher.dispatch({
             type: BattleActionTypes.ENM_ATK,
             Results: AttackResults
         })

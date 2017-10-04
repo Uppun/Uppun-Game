@@ -2,7 +2,7 @@ import TeamStore from '../data/TeamStore'
 import React from 'react'
 import {Container} from 'flux/utils'
 
-class EnemyWindow extends React.Component {
+class TeamWindow extends React.Component {
     static getStores() {
         return [TeamStore]
     }
@@ -22,4 +22,4 @@ class EnemyWindow extends React.Component {
     }
 }
 
-export default Container.create(EnemyWindow)
+export default Container.create(TeamWindow)

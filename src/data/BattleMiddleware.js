@@ -23,3 +23,5 @@ function serverAttack(target) {
     }
     
 }
+
+export default {startGame, serverAttack}

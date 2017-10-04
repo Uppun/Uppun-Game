@@ -67,7 +67,7 @@ function updateGame(target) {
 
 
     const battle = GameState.BattleState
-    const stage = battle.stages[CurrentPage]
+    const stage = battle.stages[battle.CurrentPage]
     const {enemies} = stage
     const players = GameState.TeamState.Team
     battle.Target = target
@@ -103,3 +103,5 @@ function updateGame(target) {
 
     return MockSend({TeamAttacks, EnemyAttacks})
 }
+
+export default {initializeGame, updateGame}

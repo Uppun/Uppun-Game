@@ -9,7 +9,7 @@ class BattleStore extends ReduceStore {
         super(BattleDispatcher)
     }
     getInitialState() {
-    return {}
+    return null
     }
     reduce (state, action) {
         switch(action.type) {
@@ -28,7 +28,7 @@ class BattleStore extends ReduceStore {
             }
             case BattleActionTypes.UPDATE_TARGET: {
                 const newState = {...state}
-                if (newState.stages[newState.CurrentPage-1].enemies[action.CurrentTarget].enemyHP != 0) {
+                if (newState.stages[newState.CurrentPage-1].enemies[action.CurrentTarget].enemyHP !== 0) {
                     newState.Target = action.CurrentTarget
                 }
                 return newState
