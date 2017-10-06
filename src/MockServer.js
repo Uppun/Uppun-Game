@@ -1,7 +1,8 @@
 import SailorMoon from './assets/usagi.gif'
 import SailorMars from './assets/rei.gif'
 
-const testPlayer = {
+function makeTestPlayer() {
+    return {
     characterSprite: {
         backgroundPositionX: 353,
         backgroundPositionY: 685,
@@ -14,9 +15,11 @@ const testPlayer = {
     },
     playerHP: Math.floor(Math.random() * 50 + 21),
     playerBaseAtk: Math.floor(Math.random() * 10 + 1),
+};
 }
 
-const testEnemy = {
+function makeTestEnemy() {
+    return {
     enemySprite: {
         backgroundPositionX: 100,
         backgroundPositionY: 355,
@@ -30,6 +33,7 @@ const testEnemy = {
     },
     enemyHP: Math.floor(Math.random() * 10 + 2),
     enemyBaseAtk: Math.floor(Math.random() * 10 + 1),
+};
 }
 
 function MockSend(data) {
@@ -44,7 +48,7 @@ function newGame() {
     const team = []
     const teamSize = Math.floor(Math.random() * 4 + 1)
     for (let i = 0; i < teamSize; i++) {
-        team.push(testPlayer)
+        team.push(makeTestPlayer())
     }
 
     const stages = []
@@ -53,7 +57,7 @@ function newGame() {
         const enemies = []
         const numEnemies = Math.floor(Math.random() * 3 + 1)
         for (let j = 0; j < numEnemies; j++) {
-            enemies.push(testEnemy)
+            enemies.push(makeTestEnemy())
         }
         stages.push({enemies})
     }
