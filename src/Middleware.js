@@ -24,6 +24,7 @@ function sendAttack(target) {
     for (const attack of results.enemyAttacks) {
         BattleActions.playerAttacked(attack)
     }
+    BattleActions.changeStage(results.stageUpdate)
 }
 
 export default {startGame, sendAttack}

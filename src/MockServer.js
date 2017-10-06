@@ -99,19 +99,27 @@ function updateGame(data) {
             currentTarget = null
         }
     }
+    if (enemies.some(enemy => enemy.enemyHP > 0)) {
+        for (let i = 0; i < enemies.length; i++) {
+            const enemy = enemies[i]
+            if (enemy.enemyHP <= 0) continue
 
-    for (let i = 0; i < enemies.length; i++) {
-        const enemy = enemies[i]
-        if (enemy.enemyHP <= 0) continue
+            const damage = Math.floor(Math.random() * enemy.enemyBaseAtk + 1)
+            const enemyTarget = team.findIndex(hero => hero.playerHP > 0)
+            if (enemyTarget === -1) {
+                break
+            }
+            enemyAttacks.push({attacker: i, damage, enemyTarget})
 
-        const damage = Math.floor(Math.random() * enemy.enemyBaseAtk + 1)
-        const enemyTarget = team.findIndex(hero => hero.playerHP > 0)
-        enemyAttacks.push({attacker: i, damage, enemyTarget})
-
-        team[enemyTarget].playerHP = Math.max(team[enemyTarget].playerHP - damage, 0)
+            team[enemyTarget].playerHP = Math.max(team[enemyTarget].playerHP - damage, 0)
+        }
     }
-
-    return MockSend({teamAttacks, enemyAttacks})
+    else {
+        if ((currentStage + 1) < gameState.numStages){
+            gameState.currentStage += 1
+        }
+    }
+    return MockSend({teamAttacks, enemyAttacks, stageUpdate: gameState.currentStage})
 }
 
 export default {initializeGame, updateGame}

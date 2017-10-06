@@ -3,6 +3,7 @@ const ActionTypes = {
     UPDATE_TARGET: 'UPDATE_TARGET',
     ENEMY_ATTACKED: 'ENEMY_ATTACKED',
     PLAYER_ATTACKED: 'PLAYER_ATTACKED',
+    STAGE_CHANGE: 'STAGE_CHANGE',
 }
 
 export default ActionTypes

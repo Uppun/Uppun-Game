@@ -36,4 +36,10 @@ export default {
             results,
         })
     },
+    changeStage(stage) {
+        Dispatcher.dispatch({
+            type: ActionTypes.STAGE_CHANGE,
+            stage,
+        })
+    }
 }
