@@ -1,5 +1,6 @@
 import Server from './MockServer'
 import BattleActions from './actions/BattleActions'
+import Sprites from '../assets/Animation_Data'
 
 function MockSend(data) {
     return JSON.stringify(data)
@@ -26,5 +27,13 @@ function sendAttack(target) {
     }
     BattleActions.changeStage(results.stageUpdate)
 }
+
+    function Animate(AnimationInfo){
+        for (let i = 0; i < AnimationInfo.frames; i++) {
+            setTimeout(() => {
+                BattleActions.playerAnimation({currentFrame: i, start: AnimationInfo.startingPosition})
+            }, 1000 * (i+1))
+        }
+    }
 
 export default {startGame, sendAttack}
