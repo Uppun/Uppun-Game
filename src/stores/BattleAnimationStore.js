@@ -1,4 +1,3 @@
-import Middleware from '../Middleware'
 import {ReduceStore} from 'flux/utils'
 import Dispatcher from '../Dispatcher'
 import ActionTypes from '../actions/ActionTypes'
@@ -9,29 +8,33 @@ class BattleAnimationStore extends ReduceStore {
         super(Dispatcher)
     }
 
-
     getInitialState() {
-        let queue = []
-        return { queue }
+        const queue = []
+        return {queue}
     }
 
+    // eslint-disable-next-line class-methods-use-this
     reduce(state, action) {
-        switch(action.type) {
+        switch (action.type) {
             case ActionTypes.ENEMY_ATTACKED:
-                return {...state, 
-                    queue: [...state.queue,
-                        {type: 'player', info: {
-                        currentMember: action.results.attacker, 
-                        frames: Sprites.Usagi.Attack.number, 
-                        order: Sprites.Usagi.Attack.order, 
-                        startingPosition: Sprites.Usagi.Attack.start,
-                        dimensions: Sprites.Usagi.Attack.dimensions
-                    }
-                }]
-            }
+                return {
+                    ...state,
+                    queue: [
+                        ...state.queue,
+                        {
+                            type: 'player',
+                            info: {
+                                currentMember: action.results.attacker,
+                                frames: Sprites.Usagi.Attack.number,
+                                order: Sprites.Usagi.Attack.order,
+                                startingPosition: Sprites.Usagi.Attack.start,
+                                dimensions: Sprites.Usagi.Attack.dimensions,
+                            },
+                        },
+                    ],
+                }
             case ActionTypes.ANIMATION_DONE:
-                const newQueue = state.queue.slice(1)
-                return {...state, queue: newQueue}
+                return {...state, queue: state.queue.slice(1)}
             default:
                 return state
         }

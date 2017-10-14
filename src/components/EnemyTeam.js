@@ -50,7 +50,7 @@ class EnemyTeam extends React.PureComponent {
                             ...enemy.enemySprite,
                             position: 'absolute',
                             top: enemy.enemySprite.top + index * 50,
-                            visibility: (enemy.enemyHP > 0) ? 'visible' : 'hidden'
+                            visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
                         }}
                     />
                 ))}

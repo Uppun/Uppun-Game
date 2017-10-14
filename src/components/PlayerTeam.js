@@ -7,41 +7,54 @@ import BattleActions from '../actions/BattleActions'
 class PlayerSprite extends React.PureComponent {
     render() {
         const {player, index} = this.props
-        return <div style={{
-            ...player.characterSprite,
-            position: 'absolute',
-            top: player.characterSprite.top + index * 50,
-        }} />
+        return (
+            <div
+                style={{
+                    ...player.characterSprite,
+                    position: 'absolute',
+                    top: player.characterSprite.top + index * 50,
+                }}
+            />
+        )
     }
 }
 
 class AnimatedPlayerSprite extends React.PureComponent {
     constructor(props) {
         super(props)
-        this.state = {backgroundPositionX: props.AnimationInfo.startingPosition.left,
-                      backgroundPositionY: props.AnimationInfo.startingPosition.top}
+        this.state = {
+            backgroundPositionX: props.AnimationInfo.startingPosition.left,
+            backgroundPositionY: props.AnimationInfo.startingPosition.top,
+        }
     }
     componentDidMount() {
         const {AnimationInfo} = this.props
         const order = AnimationInfo.order === 'forward' ? -1 : 1
-        for (let currentFrame = 1; currentFrame < AnimationInfo.frames; currentFrame++){
+        for (let currentFrame = 1; currentFrame < AnimationInfo.frames; currentFrame++) {
             setTimeout(() => {
-                this.setState({backgroundPositionX: AnimationInfo.startingPosition.left + 
-                               (currentFrame * AnimationInfo.dimensions.width * order)})
-                }, 250 * (currentFrame))}
-            setTimeout(() => {
-                BattleActions.animationDone()
-            }, AnimationInfo.frames * 250)
+                this.setState({
+                    backgroundPositionX:
+                        AnimationInfo.startingPosition.left + currentFrame * AnimationInfo.dimensions.width * order,
+                })
+            }, 250 * currentFrame)
+        }
+        setTimeout(() => {
+            BattleActions.animationDone()
+        }, AnimationInfo.frames * 250)
     }
     render() {
         const {player, index} = this.props
-        return <div style={{
-            ...player.characterSprite,
-            position: 'absolute',
-            top: player.characterSprite.top + index * 50,
-            backgroundPositionX: this.state.backgroundPositionX,
-            backgroundPositionY: this.state.backgroundPositionY
-        }} />
+        return (
+            <div
+                style={{
+                    ...player.characterSprite,
+                    position: 'absolute',
+                    top: player.characterSprite.top + index * 50,
+                    backgroundPositionX: this.state.backgroundPositionX,
+                    backgroundPositionY: this.state.backgroundPositionY,
+                }}
+            />
+        )
     }
 }
 
@@ -62,30 +75,23 @@ class PlayerTeam extends React.PureComponent {
         if (team == null) {
             return null
         }
-        let teamSprites
         const currentAnimation = this.state.queue[0]
-        teamSprites = team.map((player, index) => (
-            (currentAnimation && 
-            currentAnimation.type === 'player' &&
-            index === currentAnimation.info.currentMember) ? 
-                <AnimatedPlayerSprite
-                    key={index}
-                    player = {player}
-                    index = {index}
-                    AnimationInfo = {currentAnimation.info}
-                />
-                :
-                <PlayerSprite
-                    key={index}
-                    player = {player}
-                    index = {index}
-                />
-            ))
-        return (
-            <div>
-                {teamSprites}
-            </div>
+        const teamSprites = team.map(
+            (player, index) =>
+                currentAnimation &&
+                currentAnimation.type === 'player' &&
+                index === currentAnimation.info.currentMember ? (
+                    <AnimatedPlayerSprite
+                        key={index}
+                        player={player}
+                        index={index}
+                        AnimationInfo={currentAnimation.info}
+                    />
+                ) : (
+                    <PlayerSprite key={index} player={player} index={index} />
+                )
         )
+        return <div>{teamSprites}</div>
     }
 }
 
