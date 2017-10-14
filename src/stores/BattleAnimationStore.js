@@ -1,4 +1,3 @@
-import Middleware from '../Middleware'
 import {ReduceStore} from 'flux/utils'
 import Dispatcher from '../Dispatcher'
 import ActionTypes from '../actions/ActionTypes'
@@ -14,6 +13,7 @@ class BattleAnimationStore extends ReduceStore {
         return {queue}
     }
 
+    // eslint-disable-next-line class-methods-use-this
     reduce(state, action) {
         switch (action.type) {
             case ActionTypes.ENEMY_ATTACKED:
@@ -34,8 +34,7 @@ class BattleAnimationStore extends ReduceStore {
                     ],
                 }
             case ActionTypes.ANIMATION_DONE:
-                const newQueue = state.queue.slice(1)
-                return {...state, queue: newQueue}
+                return {...state, queue: state.queue.slice(1)}
             default:
                 return state
         }

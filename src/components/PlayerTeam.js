@@ -75,9 +75,8 @@ class PlayerTeam extends React.PureComponent {
         if (team == null) {
             return null
         }
-        let teamSprites
         const currentAnimation = this.state.queue[0]
-        teamSprites = team.map(
+        const teamSprites = team.map(
             (player, index) =>
                 currentAnimation &&
                 currentAnimation.type === 'player' &&

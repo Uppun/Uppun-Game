@@ -1,6 +1,5 @@
 import Server from './MockServer'
 import BattleActions from './actions/BattleActions'
-import Sprites from './assets/Animation_Data'
 import Dispatcher from './Dispatcher'
 import BattleAnimationStore from './stores/BattleAnimationStore'
 
