@@ -21,7 +21,7 @@ class BattleAnimationStore extends ReduceStore {
                 return {...state, 
                     queue: [...state.queue,
                         {type: 'player', info: {
-                        currentMember: action.attacker, 
+                        currentMember: action.results.attacker, 
                         frames: Sprites.Usagi.Attack.number, 
                         order: Sprites.Usagi.Attack.order, 
                         startingPosition: Sprites.Usagi.Attack.start,
@@ -29,6 +29,9 @@ class BattleAnimationStore extends ReduceStore {
                     }
                 }]
             }
+            case ActionTypes.ANIMATION_DONE:
+                const newQueue = state.queue.slice(1)
+                return {...state, queue: newQueue}
             default:
                 return state
         }

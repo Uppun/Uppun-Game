@@ -2,6 +2,7 @@ import React from 'react'
 import {Container} from 'flux/utils'
 import TeamStore from '../stores/TeamStore'
 import AnimationStore from '../stores/BattleAnimationStore'
+import BattleActions from '../actions/BattleActions'
 
 class PlayerSprite extends React.PureComponent {
     render() {
@@ -15,16 +16,22 @@ class PlayerSprite extends React.PureComponent {
 }
 
 class AnimatedPlayerSprite extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {backgroundPositionX: props.AnimationInfo.startingPosition.left,
+                      backgroundPositionY: props.AnimationInfo.startingPosition.top}
+    }
     componentDidMount() {
-        let order
         const {AnimationInfo} = this.props
-        (AnimationInfo.order === 'forward') ? order = 1 : order = -1
-        for (let currentFrame = 0; currentFrame < this.props.AnimationInfo.frames; currentFrame++){
+        const order = AnimationInfo.order === 'forward' ? -1 : 1
+        for (let currentFrame = 1; currentFrame < AnimationInfo.frames; currentFrame++){
             setTimeout(() => {
                 this.setState({backgroundPositionX: AnimationInfo.startingPosition.left + 
-                               (currentFrame * AnimationInfo.dimensions.width * order),
-                               backgroundPositionY: AnimationInfo.startingPosition.top})
-                }, 1000 * (currentFrame + 1))}
+                               (currentFrame * AnimationInfo.dimensions.width * order)})
+                }, 250 * (currentFrame))}
+            setTimeout(() => {
+                BattleActions.animationDone()
+            }, AnimationInfo.frames * 250)
     }
     render() {
         const {player, index} = this.props
@@ -60,12 +67,12 @@ class PlayerTeam extends React.PureComponent {
         teamSprites = team.map((player, index) => (
             (currentAnimation && 
             currentAnimation.type === 'player' &&
-            index === this.state.queue[0].currentMember) ? 
+            index === currentAnimation.info.currentMember) ? 
                 <AnimatedPlayerSprite
                     key={index}
                     player = {player}
                     index = {index}
-                    AnimationInfo = {currentAnimation}
+                    AnimationInfo = {currentAnimation.info}
                 />
                 :
                 <PlayerSprite

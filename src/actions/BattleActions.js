@@ -48,5 +48,10 @@ export default {
             type: ActionTypes.PLAYER_ANIMATE,
             AnimationInfo
         })
+    },
+    animationDone() {
+        Dispatcher.dispatch({
+            type: ActionTypes.ANIMATION_DONE
+        })
     }
 }
