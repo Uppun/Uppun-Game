@@ -41,5 +41,12 @@ export default {
             type: ActionTypes.STAGE_CHANGE,
             stage,
         })
+    },
+
+    playerAnimate(AnimationInfo) {
+        Dispatcher.dispatch({
+            type: ActionTypes.PLAYER_ANIMATE,
+            AnimationInfo
+        })
     }
 }

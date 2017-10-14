@@ -11,17 +11,28 @@ class BattleAnimationStore extends ReduceStore {
 
 
     getInitialState() {
-        return null
+        let queue = []
+        return { queue }
     }
 
     reduce(state, action) {
         switch(action.type) {
             case ActionTypes.ENEMY_ATTACKED:
-                let newState = {...state}
-                let currentMember = action.attacker
-                newState = {currentMember, frames: Sprites.Usagi.Attack.number, order: Sprites.Usagi.Attack.order, startingPosition: Sprites.Usagi.Attack.start}
-                Middleware.Animate(newState)
-                return newState
+                return {...state, 
+                    queue: [...state.queue,
+                        {type: 'player', info: {
+                        currentMember: action.attacker, 
+                        frames: Sprites.Usagi.Attack.number, 
+                        order: Sprites.Usagi.Attack.order, 
+                        startingPosition: Sprites.Usagi.Attack.start,
+                        dimensions: Sprites.Usagi.Attack.dimensions
+                    }
+                }]
+            }
+            default:
+                return state
         }
     }
 }
+
+export default new BattleAnimationStore()

@@ -4,6 +4,7 @@ const ActionTypes = {
     ENEMY_ATTACKED: 'ENEMY_ATTACKED',
     PLAYER_ATTACKED: 'PLAYER_ATTACKED',
     STAGE_CHANGE: 'STAGE_CHANGE',
+    PLAYER_ANIMATE: 'PLAYER_ANIMATE'
 }
 
 export default ActionTypes
