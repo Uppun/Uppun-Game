@@ -4,15 +4,15 @@ import Sprites from './assets/Animation_Data'
 import Dispatcher from './Dispatcher'
 import BattleAnimationStore from './stores/BattleAnimationStore'
 
-Dispatcher.register((payload) => { 
+Dispatcher.register(payload => {
     if (payload.actionType === 'ENEMY_ATTACKED') {
         Dispatcher.waitFor(BattleAnimationStore.getDispatchToken())
 
         const AnimationInfo = BattleAnimationStore.getState()
         for (let currentFrame = 0; currentFrame < AnimationInfo.frames; currentFrame++) {
             setTimeout(() => {
-               BattleActions.playerAnimate(AnimationInfo)
-            }, 1000 * (currentFrame+1))
+                BattleActions.playerAnimate(AnimationInfo)
+            }, 1000 * (currentFrame + 1))
         }
     }
 })
@@ -42,6 +42,5 @@ function sendAttack(target) {
     }
     BattleActions.changeStage(results.stageUpdate)
 }
-
 
 export default {startGame, sendAttack}

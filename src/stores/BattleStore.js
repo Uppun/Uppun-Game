@@ -43,7 +43,7 @@ class BattleStore extends ReduceStore {
             }
 
             case ActionTypes.STAGE_CHANGE: {
-                console.log(state.currentStage + " " + state.numStages)
+                console.log(`${state.currentStage} ${state.numStages}`)
                 state.currentStage = action.stage
                 return state
             }

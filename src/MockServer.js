@@ -3,37 +3,37 @@ import SailorMars from './assets/rei.gif'
 
 function makeTestPlayer() {
     return {
-    characterSprite: {
-        backgroundPositionX: 353,
-        backgroundPositionY: 685,
-        height: 40,
-        width: 40,
-        top: 150,
-        left: 250,
-        backgroundImage: `url(${SailorMoon})`,
-        zIndex: 2,
-    },
-    playerHP: Math.floor(Math.random() * 50 + 21),
-    playerBaseAtk: Math.floor(Math.random() * 10 + 1),
-};
+        characterSprite: {
+            backgroundPositionX: 353,
+            backgroundPositionY: 685,
+            height: 40,
+            width: 40,
+            top: 150,
+            left: 250,
+            backgroundImage: `url(${SailorMoon})`,
+            zIndex: 2,
+        },
+        playerHP: Math.floor(Math.random() * 50 + 21),
+        playerBaseAtk: Math.floor(Math.random() * 10 + 1),
+    }
 }
 
 function makeTestEnemy() {
     return {
-    enemySprite: {
-        backgroundPositionX: 100,
-        backgroundPositionY: 355,
-        height: 40,
-        width: 39,
-        top: 150,
-        left: 50,
-        backgroundImage: `url(${SailorMars})`,
-        zIndex: 2,
-        visibility: 'visible',
-    },
-    enemyHP: Math.floor(Math.random() * 10 + 2),
-    enemyBaseAtk: Math.floor(Math.random() * 10 + 1),
-};
+        enemySprite: {
+            backgroundPositionX: 100,
+            backgroundPositionY: 355,
+            height: 40,
+            width: 39,
+            top: 150,
+            left: 50,
+            backgroundImage: `url(${SailorMars})`,
+            zIndex: 2,
+            visibility: 'visible',
+        },
+        enemyHP: Math.floor(Math.random() * 10 + 2),
+        enemyBaseAtk: Math.floor(Math.random() * 10 + 1),
+    }
 }
 
 function MockSend(data) {
@@ -113,11 +113,8 @@ function updateGame(data) {
 
             team[enemyTarget].playerHP = Math.max(team[enemyTarget].playerHP - damage, 0)
         }
-    }
-    else {
-        if ((currentStage + 1) < gameState.numStages){
-            gameState.currentStage += 1
-        }
+    } else if (currentStage + 1 < gameState.numStages) {
+        gameState.currentStage += 1
     }
     return MockSend({teamAttacks, enemyAttacks, stageUpdate: gameState.currentStage})
 }
