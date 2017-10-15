@@ -12,13 +12,17 @@ class EnemySprite extends React.PureComponent {
 
     render() {
         const {enemy, index} = this.props
-        return <div onClick={this.handleClick} 
-                    style={{
-                        ...enemy.enemySprite,
-                        position: 'absolute',
-                        top: enemy.enemySprite.top + index * 50,
-                        visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
-                    }} />
+        return (
+            <div
+                onClick={this.handleClick}
+                style={{
+                    ...enemy.enemySprite,
+                    position: 'absolute',
+                    top: enemy.enemySprite.top + index * 50,
+                    visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
+                }}
+            />
+        )
     }
 }
 
@@ -53,18 +57,21 @@ class AnimatedEnemySprite extends React.PureComponent {
 
     render() {
         const {enemy, index} = this.props
-        return <div onClick={this.handleClick} 
-                    style={{
-                        ...enemy.enemySprite,
-                        position: 'absolute',
-                        top: enemy.enemySprite.top + index * 50,
-                        visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
-                        backgroundPositionX: this.state.backgroundPositionX,
-                        backgroundPositionY: this.state.backgroundPositionY,
-                    }} />
+        return (
+            <div
+                onClick={this.handleClick}
+                style={{
+                    ...enemy.enemySprite,
+                    position: 'absolute',
+                    top: enemy.enemySprite.top + index * 50,
+                    visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
+                    backgroundPositionX: this.state.backgroundPositionX,
+                    backgroundPositionY: this.state.backgroundPositionY,
+                }}
+            />
+        )
     }
 }
-
 
 class EnemyTeam extends React.PureComponent {
     static getStores() {
@@ -105,9 +112,7 @@ class EnemyTeam extends React.PureComponent {
                     <EnemySprite key={index} enemy={enemy} index={index} />
                 )
         )
-        return (
-            <div>{enemySprites}</div>
-        )
+        return <div>{enemySprites}</div>
     }
 }
 
