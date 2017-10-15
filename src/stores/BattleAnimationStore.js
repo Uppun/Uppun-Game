@@ -33,6 +33,23 @@ class BattleAnimationStore extends ReduceStore {
                         },
                     ],
                 }
+            case ActionTypes.PLAYER_ATTACKED:
+                return {
+                    ...state,
+                    queue: [
+                        ...state.queue,
+                        {
+                            type: 'enemy',
+                            info: {
+                                currentMember: action.results.attacker,
+                                frames: Sprites.Rei.Attack.number,
+                                order: Sprites.Rei.Attack.order,
+                                startingPosition: Sprites.Rei.Attack.start,
+                                dimensions: Sprites.Rei.Attack.dimensions,
+                            },
+                        },
+                    ],
+                }
             case ActionTypes.ANIMATION_DONE:
                 return {...state, queue: state.queue.slice(1)}
             default:

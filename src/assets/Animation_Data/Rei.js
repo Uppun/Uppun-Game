@@ -7,11 +7,11 @@ export default {
         dimensions: {height: 37, width: 19},
     },
     Attack: {
-        start: {top: 634 - 491, left: 421 - 358},
+        start: {top: 634 - 491, left: 421 - 345},
         number: 6,
         time: 1000,
         order: 'reverse',
-        dimensions: {height: 43, width: 32},
+        dimensions: {height: 43, width: 40},
     },
     ReverseWalk: {
         start: {top: 624 - 279, left: 421 - 159},

@@ -2,6 +2,7 @@ import React from 'react'
 import {Container} from 'flux/utils'
 import BattleActions from '../actions/BattleActions'
 import BattleStore from '../stores/BattleStore'
+import AnimationStore from '../stores/BattleAnimationStore'
 
 class EnemySprite extends React.PureComponent {
     handleClick = () => {
@@ -10,14 +11,64 @@ class EnemySprite extends React.PureComponent {
     }
 
     render() {
-        const {style} = this.props
-        return <div onClick={this.handleClick} style={style} />
+        const {enemy, index} = this.props
+        return <div onClick={this.handleClick} 
+                    style={{
+                        ...enemy.enemySprite,
+                        position: 'absolute',
+                        top: enemy.enemySprite.top + index * 50,
+                        visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
+                    }} />
     }
 }
 
+class AnimatedEnemySprite extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {
+            backgroundPositionX: props.AnimationInfo.startingPosition.left,
+            backgroundPositionY: props.AnimationInfo.startingPosition.top,
+        }
+    }
+
+    componentDidMount() {
+        const {AnimationInfo} = this.props
+        const order = AnimationInfo.order === 'forward' ? -1 : 1
+        for (let currentFrame = 1; currentFrame < AnimationInfo.frames; currentFrame++) {
+            setTimeout(() => {
+                this.setState({
+                    backgroundPositionX:
+                        AnimationInfo.startingPosition.left + currentFrame * AnimationInfo.dimensions.width * order,
+                })
+            }, 250 * currentFrame)
+        }
+        setTimeout(() => {
+            BattleActions.animationDone()
+        }, AnimationInfo.frames * 250)
+    }
+    handleClick = () => {
+        const {onClick, index} = this.props
+        if (onClick) onClick(index)
+    }
+
+    render() {
+        const {enemy, index} = this.props
+        return <div onClick={this.handleClick} 
+                    style={{
+                        ...enemy.enemySprite,
+                        position: 'absolute',
+                        top: enemy.enemySprite.top + index * 50,
+                        visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
+                        backgroundPositionX: this.state.backgroundPositionX,
+                        backgroundPositionY: this.state.backgroundPositionY,
+                    }} />
+    }
+}
+
+
 class EnemyTeam extends React.PureComponent {
     static getStores() {
-        return [BattleStore]
+        return [BattleStore, AnimationStore]
     }
 
     static calculateState(prevState) {
@@ -26,7 +77,7 @@ class EnemyTeam extends React.PureComponent {
             return null
         }
 
-        return battles.stages[battles.currentStage]
+        return {...battles.stages[battles.currentStage], ...AnimationStore.getState()}
     }
 
     handleClickTarget = index => {
@@ -34,27 +85,28 @@ class EnemyTeam extends React.PureComponent {
     }
 
     render() {
-        const {enemies} = this.state
+        const enemies = this.state.enemies
         if (enemies == null) {
             return null
         }
-
-        return (
-            <div>
-                {enemies.map((enemy, index) => (
-                    <EnemySprite
+        const currentAnimation = this.state.queue[0]
+        const enemySprites = enemies.map(
+            (enemy, index) =>
+                currentAnimation &&
+                currentAnimation.type === 'enemy' &&
+                index === currentAnimation.info.currentMember ? (
+                    <AnimatedEnemySprite
                         key={index}
+                        enemy={enemy}
                         index={index}
-                        onClick={this.handleClickTarget}
-                        style={{
-                            ...enemy.enemySprite,
-                            position: 'absolute',
-                            top: enemy.enemySprite.top + index * 50,
-                            visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
-                        }}
+                        AnimationInfo={currentAnimation.info}
                     />
-                ))}
-            </div>
+                ) : (
+                    <EnemySprite key={index} enemy={enemy} index={index} />
+                )
+        )
+        return (
+            <div>{enemySprites}</div>
         )
     }
 }
