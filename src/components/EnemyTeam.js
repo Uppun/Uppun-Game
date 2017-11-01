@@ -64,7 +64,7 @@ class AnimatedEnemySprite extends React.PureComponent {
                 style={{
                     ...Assets[enemy.enemy].default,
                     position: 'absolute',
-                    top: Assets[enemy.enemy].default.top.top + index * 50,
+                    top: Assets[enemy.enemy].default.top + index * 50,
                     visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
                     backgroundPositionX: this.state.backgroundPositionX,
                     backgroundPositionY: this.state.backgroundPositionY,

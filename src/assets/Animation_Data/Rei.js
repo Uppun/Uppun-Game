@@ -7,7 +7,7 @@ export default {
         width: 39,
         top: 150,
         left: 50,
-        backgroundImage: Sprite,
+        backgroundImage: `url(${Sprite})`,
         zIndex: 2,
         visibility: 'visible',
     },

@@ -7,7 +7,7 @@ export default {
         width: 40,
         top: 150,
         left: 250,
-        backgroundImage: Sprite,
+        backgroundImage: `url(${Sprite})`,
         zIndex: 2,
     },
     Animation: {

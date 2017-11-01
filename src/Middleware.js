@@ -31,7 +31,7 @@ function connect(){
             case 'initialize': 
                 BattleActions.initialize(recievedData.game)
                 break;
-            case 'attack':
+            case 'attacks':
                 for (const attack of recievedData.teamAttacks) {
                     BattleActions.enemyAttacked(attack)
                 }

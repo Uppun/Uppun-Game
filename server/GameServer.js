@@ -66,7 +66,7 @@ function newGame() {
         }
         stages.push({enemies})
     }
-
+    console.log(stages)
     return {currentStage: 0, heroes: {team}, numStages, stages}
 }
 
