@@ -1,45 +1,52 @@
-import Server from './MockServer'
 import BattleActions from './actions/BattleActions'
 import Dispatcher from './Dispatcher'
 import BattleAnimationStore from './stores/BattleAnimationStore'
 
-Dispatcher.register(payload => {
-    if (payload.actionType === 'ENEMY_ATTACKED') {
-        Dispatcher.waitFor(BattleAnimationStore.getDispatchToken())
+let socket
 
-        const AnimationInfo = BattleAnimationStore.getState()
-        for (let currentFrame = 0; currentFrame < AnimationInfo.frames; currentFrame++) {
-            setTimeout(() => {
-                BattleActions.playerAnimate(AnimationInfo)
-            }, 1000 * (currentFrame + 1))
-        }
+function send(data) {
+    if (!socket) {
+        console.log("No socket! :(")
+        return;
     }
-})
-
-function MockSend(data) {
-    return JSON.stringify(data)
+    socket.send(JSON.stringify(data));
 }
 
-function MockParse(data) {
-    return JSON.parse(data)
-}
+function connect(){
+    socket = new WebSocket('ws://localhost:9000')
+    socket.addEventListener('message', (event) => {
+        let recievedData
 
-function startGame() {
-    const game = MockParse(Server.initializeGame())
-    BattleActions.initialize(game)
+        try{
+            recievedData = JSON.parse(event.data)
+        } catch(err) {
+            console.warn('invalid json:', event.data);
+            console.warn(err);
+        }
+        console.log(recievedData)
+        switch(recievedData.type) {
+            case 'connection':
+                send({type: 'initialize'})
+                break;
+            case 'initialize': 
+                BattleActions.initialize(recievedData.game)
+                break;
+            case 'attack':
+                for (const attack of recievedData.teamAttacks) {
+                    BattleActions.enemyAttacked(attack)
+                }
+
+                for (const attack of recievedData.enemyAttacks) {
+                    BattleActions.playerAttacked(attack)
+                }
+                
+                BattleActions.changeStage(recievedData.stageUpdate)
+        }
+    })
 }
 
 function sendAttack(target) {
-    const results = MockParse(Server.updateGame(MockSend({target})))
-
-    for (const attack of results.teamAttacks) {
-        BattleActions.enemyAttacked(attack)
-    }
-
-    for (const attack of results.enemyAttacks) {
-        BattleActions.playerAttacked(attack)
-    }
-    BattleActions.changeStage(results.stageUpdate)
+    send({type: 'attack', target})
 }
 
-export default {startGame, sendAttack}
+export default {connect, sendAttack}

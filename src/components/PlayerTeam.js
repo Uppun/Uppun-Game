@@ -3,16 +3,18 @@ import {Container} from 'flux/utils'
 import TeamStore from '../stores/TeamStore'
 import AnimationStore from '../stores/BattleAnimationStore'
 import BattleActions from '../actions/BattleActions'
+import Assets from '../assets/Animation_Data'
 
 class PlayerSprite extends React.PureComponent {
     render() {
         const {player, index} = this.props
+        console.log(Assets[player.character])
         return (
             <div
                 style={{
-                    ...player.characterSprite,
+                    ...Assets[player.character].default,
                     position: 'absolute',
-                    top: player.characterSprite.top + index * 50,
+                    top: Assets[player.character].default.top + index * 50,
                 }}
             />
         )
@@ -47,9 +49,9 @@ class AnimatedPlayerSprite extends React.PureComponent {
         return (
             <div
                 style={{
-                    ...player.characterSprite,
+                    ...Assets[player.character].default,
                     position: 'absolute',
-                    top: player.characterSprite.top + index * 50,
+                    top: Assets[player.character].default.top + index * 50,
                     backgroundPositionX: this.state.backgroundPositionX,
                     backgroundPositionY: this.state.backgroundPositionY,
                 }}

@@ -5,4 +5,4 @@ import Middleware from './Middleware'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
-Middleware.startGame()
+Middleware.connect()

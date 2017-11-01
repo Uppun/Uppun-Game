@@ -3,6 +3,7 @@ import {Container} from 'flux/utils'
 import BattleActions from '../actions/BattleActions'
 import BattleStore from '../stores/BattleStore'
 import AnimationStore from '../stores/BattleAnimationStore'
+import Assets from '../assets/Animation_Data'
 
 class EnemySprite extends React.PureComponent {
     handleClick = () => {
@@ -16,9 +17,9 @@ class EnemySprite extends React.PureComponent {
             <div
                 onClick={this.handleClick}
                 style={{
-                    ...enemy.enemySprite,
+                    ...Assets[enemy.enemy].default,
                     position: 'absolute',
-                    top: enemy.enemySprite.top + index * 50,
+                    top: Assets[enemy.enemy].default.top + index * 50,
                     visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
                 }}
             />
@@ -61,9 +62,9 @@ class AnimatedEnemySprite extends React.PureComponent {
             <div
                 onClick={this.handleClick}
                 style={{
-                    ...enemy.enemySprite,
+                    ...Assets[enemy.enemy].default,
                     position: 'absolute',
-                    top: enemy.enemySprite.top + index * 50,
+                    top: Assets[enemy.enemy].default.top.top + index * 50,
                     visibility: enemy.enemyHP > 0 ? 'visible' : 'hidden',
                     backgroundPositionX: this.state.backgroundPositionX,
                     backgroundPositionY: this.state.backgroundPositionY,
