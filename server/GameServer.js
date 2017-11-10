@@ -1,13 +1,10 @@
-const WebSocket = require('ws');
-const MongoClient = require('mongodb').MongoClient;
+const WebSocket = require('ws')
+const MongoClient = require('mongodb').MongoClient
+const uuidv4 = require('uuid/v4')
 
 const wss = new WebSocket.Server({ port: 9000 })
 wss.on('listening', () => { console.log("Server started!")})
-let gameState
 let db
-newGame().then(state => {
-    gameState = state
-})
 
 
 wss.broadcast = function broadcast(data) {
@@ -19,6 +16,8 @@ wss.broadcast = function broadcast(data) {
   };
   
 wss.on('connection', (ws) => {
+    let gameState
+    let sessionId
     ws.send(JSON.stringify({type: 'connection'}))
     ws.on('message', (data) => {
         let recievedData
@@ -31,10 +30,23 @@ wss.on('connection', (ws) => {
         console.log(recievedData)
         switch(recievedData.type) {
             case 'initialize':
-                ws.send(JSON.stringify({type: 'initialize', game: gameState}))
+                MongoClient.connect("mongodb://localhost:/gameDb").then(db => {
+                    db.collection('sessions').findOne({sessionId: recievedData.sessionId}).then(sessionInfo => {  
+                        if (sessionInfo === null) {
+                            sessionId = uuidv4()
+                            newGame(sessionId).then(state => {
+                                gameState = state
+                                ws.send(JSON.stringify({type: 'initialize', game: gameState, sessionId}))
+                            })
+                        } else {
+                            gameState = sessionInfo.state
+                            sessionId = sessionInfo.sessionId
+                            ws.send(JSON.stringify({type: 'initialize', game: sessionInfo.state, sessionId: sessionInfo.sessionId}))
+                        }
+                    db.close()})})
                 break;
             case 'attack':
-                ws.send(JSON.stringify(updateGame(recievedData.target)))
+                ws.send(JSON.stringify(updateGame(recievedData.target, gameState, sessionId)))
                 break;
         }
     })
@@ -55,7 +67,7 @@ function makeTestEnemy() {
     }
 }
 
-async function newGame() {
+async function newGame(sessionId) {
     let team = []
     const teamSize = Math.floor(Math.random() * 4 + 1)
     const stages = []
@@ -75,13 +87,15 @@ async function newGame() {
         }
         stages.push({enemies: await Promise.all(enemies)})
     }
+    const returnValue = {currentStage: 0, heroes: {team}, numStages, stages}
+    db.collection('sessions').insertOne({sessionId, state: returnValue})
     db.close()
 
-    return {currentStage: 0, heroes: {team}, numStages, stages}
+    return returnValue
 }
 
 
-function updateGame(data) {
+function updateGame(data, gameState, sessionId) {
     const teamAttacks = []
     const enemyAttacks = []
 
@@ -126,5 +140,11 @@ function updateGame(data) {
     } else if (currentStage + 1 < gameState.numStages) {
         gameState.currentStage += 1
     }
+    MongoClient.connect("mongodb://localhost:/gameDb").then(db => {
+        console.log(gameState)
+        console.log(sessionId)
+        db.collection('sessions').updateOne({sessionId}, {$set:{state: gameState}}).then(() =>
+            db.close())
+    })
     return {type: 'attacks', teamAttacks, enemyAttacks, stageUpdate: gameState.currentStage}
 }

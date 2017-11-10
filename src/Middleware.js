@@ -26,9 +26,11 @@ function connect(){
         console.log(recievedData)
         switch(recievedData.type) {
             case 'connection':
-                send({type: 'initialize'})
+                const sessionId = localStorage.getItem('sessionId')
+                send({type: 'initialize', sessionId})
                 break;
-            case 'initialize': 
+            case 'initialize':
+                localStorage.setItem('sessionId', recievedData.sessionId)
                 BattleActions.initialize(recievedData.game)
                 break;
             case 'attacks':
