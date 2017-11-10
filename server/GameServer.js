@@ -1,8 +1,14 @@
 const WebSocket = require('ws');
+const MongoClient = require('mongodb').MongoClient;
 
-const wss = new WebSocket.Server({ port: 9000 });
+const wss = new WebSocket.Server({ port: 9000 })
 wss.on('listening', () => { console.log("Server started!")})
-const gameState = newGame();
+let gameState
+let db
+newGame().then(state => {
+    gameState = state
+})
+
 
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach((client) => {
@@ -49,24 +55,28 @@ function makeTestEnemy() {
     }
 }
 
-function newGame() {
-    const team = []
+async function newGame() {
+    let team = []
     const teamSize = Math.floor(Math.random() * 4 + 1)
-    for (let i = 0; i < teamSize; i++) {
-        team.push(makeTestPlayer())
-    }
-
     const stages = []
     const numStages = Math.floor(Math.random() * 3 + 1)
+
+    db = await MongoClient.connect("mongodb://localhost:/gameDb")
+    const teamPromises = []
+    for (let i = 0; i < teamSize; i++) {
+        teamPromises.push(db.collection('characters').findOne({character: "Usagi"}))
+    }
+    team = await Promise.all(teamPromises)
     for (let i = 0; i < numStages; i++) {
         const enemies = []
         const numEnemies = Math.floor(Math.random() * 3 + 1)
         for (let j = 0; j < numEnemies; j++) {
-            enemies.push(makeTestEnemy())
+            enemies.push(db.collection('enemies').findOne({enemy: "Rei"}))
         }
-        stages.push({enemies})
+        stages.push({enemies: await Promise.all(enemies)})
     }
-    console.log(stages)
+    db.close()
+
     return {currentStage: 0, heroes: {team}, numStages, stages}
 }
 
