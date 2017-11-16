@@ -13,8 +13,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prettier": "eslint --fix **/*.js",
-    "lint": "eslint **/*.js"
+    "prettier": "eslint --fix **/*.js --ignore-path .gitignore",
+    "lint": "eslint **/*.js --ignore-path .gitignore"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
