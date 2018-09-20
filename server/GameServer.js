@@ -2,7 +2,10 @@ const WebSocket = require('ws')
 const MongoClient = require('mongodb').MongoClient
 const uuidv4 = require('uuid/v4')
 
-const wss = new WebSocket.Server({ port: 9000 })
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:/gameDb';
+const PORT = process.env.PORT || 9000;
+
+const wss = new WebSocket.Server({ port: PORT })
 wss.on('listening', () => { console.log("Server started!")})
 let db
 
@@ -30,7 +33,7 @@ wss.on('connection', (ws) => {
         console.log(recievedData)
         switch(recievedData.type) {
             case 'initialize':
-                MongoClient.connect("mongodb://localhost:/gameDb").then(db => {
+                MongoClient.connect(MONGODB_URI).then(db => {
                     db.collection('sessions').findOne({sessionId: recievedData.sessionId}).then(sessionInfo => {  
                         if (sessionInfo === null) {
                             sessionId = uuidv4()
@@ -73,7 +76,7 @@ async function newGame(sessionId) {
     const stages = []
     const numStages = Math.floor(Math.random() * 3 + 1)
 
-    db = await MongoClient.connect("mongodb://localhost:/gameDb")
+    db = await MongoClient.connect(MONGODB_URI)
     const teamPromises = []
     for (let i = 0; i < teamSize; i++) {
         teamPromises.push(db.collection('characters').findOne({character: "Usagi"}))
@@ -140,7 +143,7 @@ function updateGame(data, gameState, sessionId) {
     } else if (currentStage + 1 < gameState.numStages) {
         gameState.currentStage += 1
     }
-    MongoClient.connect("mongodb://localhost:/gameDb").then(db => {
+    MongoClient.connect(MONGODB_URI).then(db => {
         console.log(gameState)
         console.log(sessionId)
         db.collection('sessions').updateOne({sessionId}, {$set:{state: gameState}}).then(() =>

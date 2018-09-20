@@ -4,11 +4,19 @@
   "description": "",
   "main": "GameServer.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node GameServer.js"
+  },
+  "keywords": [
+    "heroku"
+  ],
+  "engines": {
+    "node": "10.4.0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "uuid": "^3.1.0"
+    "mongodb": "^2.2.36",
+    "uuid": "^3.1.0",
+    "ws": "^6.0.0"
   }
 }

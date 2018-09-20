@@ -13,7 +13,7 @@ function send(data) {
 }
 
 function connect(){
-    socket = new WebSocket('ws://localhost:9000')
+    socket = new WebSocket('ws://uppun-game.herokuapp.com/')
     socket.addEventListener('message', (event) => {
         let recievedData
 
